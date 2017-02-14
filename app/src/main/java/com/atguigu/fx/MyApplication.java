@@ -2,6 +2,7 @@ package com.atguigu.fx;
 
 import android.app.Application;
 
+import com.atguigu.fx.modle.Modle;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.controller.EaseUI;
 
@@ -18,6 +19,9 @@ public class MyApplication extends Application {
 
         //初始化环信SDK
         initHXSdk();
+
+        //初始化Modle
+        Modle.getInstance().init(this);
     }
 
     private void initHXSdk() {

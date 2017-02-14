@@ -10,14 +10,14 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/splash_iv_icon"
-        android:background="@drawable/atguigu_logo"
+        android:background="@drawable/timg"
         android:layout_centerInParent="true"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/splash_iv_icon"
-        android:text="欢迎来到尚硅谷"
+        android:text="欢迎来到呀~咪"
         android:textSize="26sp"
         android:gravity="center"/>
     <TextView

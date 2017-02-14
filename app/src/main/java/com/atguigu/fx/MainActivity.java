@@ -3,7 +3,7 @@ package com.atguigu.fx;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class Welcome extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
