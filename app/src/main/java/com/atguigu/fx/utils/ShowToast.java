@@ -28,4 +28,8 @@ public class ShowToast {
             }
         });
     }
+
+    public static boolean isEmpty(String username) {
+        return false;
+    }
 }

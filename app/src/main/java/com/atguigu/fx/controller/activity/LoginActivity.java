@@ -7,9 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.atguigu.fx.MainActivity;
 import com.atguigu.fx.R;
 import com.atguigu.fx.modle.Modle;
 import com.atguigu.fx.modle.bean.UserInfo;

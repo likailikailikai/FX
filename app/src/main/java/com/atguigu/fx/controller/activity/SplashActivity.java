@@ -6,7 +6,6 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.atguigu.fx.MainActivity;
 import com.atguigu.fx.R;
 import com.atguigu.fx.modle.Modle;
 import com.hyphenate.chat.EMClient;

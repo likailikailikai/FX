@@ -37,7 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".controller.activity.MainActivity" />
 
         <!-- 设置环信应用的appkey -->
         <meta-data
@@ -61,7 +61,11 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".controller.activity.LoginActivity"></activity>
+        <activity android:name=".controller.activity.LoginActivity" />
+        <activity android:name=".controller.activity.AddContactActivity" />
+        <activity android:name=".controller.activity.ChatActivity" />
+        <activity android:name=".controller.activity.InviteActivity" />
+        <activity android:name=".controller.activity.GroupListActivity"></activity>
     </application>
 
 </manifest>
