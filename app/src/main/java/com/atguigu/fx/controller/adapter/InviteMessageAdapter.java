@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.atguigu.fx.R;
+import com.atguigu.fx.controller.fragment.InviteMessageActivity;
 import com.atguigu.fx.modle.bean.GroupInfo;
 import com.atguigu.fx.modle.bean.InvitationInfo;
 import com.atguigu.fx.modle.bean.UserInfo;
@@ -28,10 +29,13 @@ public class InviteMessageAdapter extends BaseAdapter {
 
     private List<InvitationInfo> invitationInfos;
 
-    public InviteMessageAdapter(Context context) {
+    public InviteMessageAdapter(Context context,OnInviteChangeListener onInviteChangeListener) {
         this.context = context;
         invitationInfos = new ArrayList<>();
+        this.onInviteChangeListener = onInviteChangeListener;
     }
+
+
 
     public void refresh(List<InvitationInfo> invitations) {
 
@@ -77,7 +81,7 @@ public class InviteMessageAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         //绑定数据
-        InvitationInfo invitationInfo = invitationInfos.get(position);
+        final InvitationInfo invitationInfo = invitationInfos.get(position);
 
         GroupInfo groupInfo = invitationInfo.getGroupInfo();
         if (groupInfo != null) {
@@ -99,23 +103,42 @@ public class InviteMessageAdapter extends BaseAdapter {
                 viewHolder.btInviteAccept.setVisibility(View.VISIBLE);
 
                 //设置resson
-                if(invitationInfo.getReason() == null) {
+                if (invitationInfo.getReason() == null) {
                     viewHolder.tvInviteReason.setText("邀请好友");
-                }else {
+                } else {
                     viewHolder.tvInviteReason.setText(invitationInfo.getReason());
                 }
-            }else if(invitationInfo.getStatus()//邀请被接受
-                    == InvitationInfo.InvitationStatus.INVITE_ACCEPT_BY_PEER ){
-                if(invitationInfo.getReason() == null) {
+                //接受按钮的监听
+                viewHolder.btInviteAccept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onInviteChangeListener != null) {
+                            onInviteChangeListener.onAccept(invitationInfo);
+                        }
+                    }
+                });
+                //拒绝按钮的监听
+                viewHolder.btInviteReject.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onInviteChangeListener != null) {
+                            onInviteChangeListener.onAccept(invitationInfo);
+                        }
+                    }
+                });
+
+            } else if (invitationInfo.getStatus()//邀请被接受
+                    == InvitationInfo.InvitationStatus.INVITE_ACCEPT_BY_PEER) {
+                if (invitationInfo.getReason() == null) {
                     viewHolder.tvInviteReason.setText("邀请被接受");
-                }else{
+                } else {
                     viewHolder.tvInviteReason.setText(invitationInfo.getReason());
                 }
-            }else if(invitationInfo.getStatus()//接受邀请
-                    == InvitationInfo.InvitationStatus.INVITE_ACCEPT ) {
-                if(invitationInfo.getReason() == null) {
+            } else if (invitationInfo.getStatus()//接受邀请
+                    == InvitationInfo.InvitationStatus.INVITE_ACCEPT) {
+                if (invitationInfo.getReason() == null) {
                     viewHolder.tvInviteReason.setText("接受邀请");
-                }else{
+                } else {
                     viewHolder.tvInviteReason.setText(invitationInfo.getReason());
                 }
             }
@@ -139,6 +162,26 @@ public class InviteMessageAdapter extends BaseAdapter {
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+
+    /*
+  * 第一步  定义接口
+  * 第二步  定义接口的变量
+  * 第三步  设置set方法
+  * 第四步  接受接口的实例对象
+  * 第五步  调用接口方法
+  *
+  * */
+    private OnInviteChangeListener onInviteChangeListener;
+
+    public void setOnInviteChangeListener(OnInviteChangeListener onInviteChangeListener) {
+        this.onInviteChangeListener = onInviteChangeListener;
+
+    }
+
+    public interface OnInviteChangeListener {
+        void onAccept(InvitationInfo info); //同意
+        void onReject(InvitationInfo info);  //拒绝
     }
 
 }

@@ -8,6 +8,9 @@ import com.atguigu.fx.R;
 import com.atguigu.fx.controller.adapter.InviteMessageAdapter;
 import com.atguigu.fx.modle.Modle;
 import com.atguigu.fx.modle.bean.InvitationInfo;
+import com.atguigu.fx.utils.ShowToast;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.List;
 
@@ -30,7 +33,69 @@ public class InviteMessageActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        adapter = new InviteMessageAdapter(this);
+        adapter = new InviteMessageAdapter(this, new InviteMessageAdapter.OnInviteChangeListener(){
+
+            @Override
+            public void onAccept(final InvitationInfo info) {
+                Modle.getInstance().getGlobalThread().execute(new Runnable() {
+                       @Override
+                       public void run() {
+                               //网络 通知环信服务器
+                                       try {
+                                EMClient.getInstance().contactManager()
+                                                .acceptInvitation(info.getUserInfo().getHxid());
+                                //本地
+                                        Modle.getInstance().getDbManager()
+                                                .getInvitationDao()
+                                                .updateInvitationStatus(InvitationInfo.InvitationStatus.INVITE_ACCEPT,
+                                                        info.getUserInfo().getHxid());
+
+                                        //内存和网页
+                                                runOnUiThread(new Runnable() {
+                                                        @Override
+                                                   public void run() {
+                                                           refresh();
+                                                         ShowToast.show(InviteMessageActivity.this,"接受成功");
+                                                       }
+                                                    });
+                            } catch (HyphenateException e) {
+                                e.printStackTrace();
+                                                     ShowToast.showUI(InviteMessageActivity.this,"接受失败"+e.getMessage());
+                                        }
+                                }
+                        });
+
+            }
+            @Override
+            public void onReject(final InvitationInfo info) {
+                Modle.getInstance().getGlobalThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        //网络通知环信
+                        try {
+                            EMClient.getInstance().contactManager()
+                                    .declineInvitation(info.getUserInfo().getHxid());
+                            //本地
+                            Modle.getInstance().getDbManager().getInvitationDao()
+                                    .removeInvitation(info.getUserInfo().getHxid());
+                            Modle.getInstance().getDbManager().getContactDao()
+                                    .deleteContactByHxId(info.getUserInfo().getHxid());
+                            //内存和网页
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refresh();
+                                    ShowToast.show(InviteMessageActivity.this,"拒绝成功");
+                                }
+                            });
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                            ShowToast.showUI(InviteMessageActivity.this,"拒绝失败"+e.getMessage());
+                        }
+                    }
+                });
+            }
+        });
 
         inviteMsgLv.setAdapter(adapter);
 

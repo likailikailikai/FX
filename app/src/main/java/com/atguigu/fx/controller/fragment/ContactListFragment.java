@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,7 +47,7 @@ public class ContactListFragment extends EaseContactListFragment {
 
         //初始化头布局
         View view = View.inflate(getActivity(), R.layout.fragment_contact_list_head, null);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         //添加头布局
         listView.addHeaderView(view);
         //添加actionbar右侧的加号
@@ -55,7 +56,7 @@ public class ContactListFragment extends EaseContactListFragment {
             @Override
             public void onClick(View v) {
                 //跳转到邀请界面
-                Intent intent = new Intent(getActivity(),InviteActivity.class);
+                Intent intent = new Intent(getActivity(), InviteActivity.class);
                 startActivity(intent);
             }
         });
@@ -65,7 +66,7 @@ public class ContactListFragment extends EaseContactListFragment {
         //注册广播
         LocalBroadcastManager manager = LocalBroadcastManager.getInstance(getActivity());
 
-        manager.registerReceiver(recevier,new IntentFilter(Contacts.NEW_INVITE_CHANGE));
+        manager.registerReceiver(recevier, new IntentFilter(Contacts.NEW_INVITE_CHANGE));
     }
 
     @Override
@@ -79,10 +80,10 @@ public class ContactListFragment extends EaseContactListFragment {
         switch (view.getId()) {
             case R.id.ll_new_friends:
                 //隐藏小红点
-                SpUtils.getInstace().save(SpUtils.NEW_INVITE,false);
+                SpUtils.getInstace().save(SpUtils.NEW_INVITE, false);
                 isShow();
                 //跳转
-                Intent intent = new Intent(getActivity(),InviteMessageActivity.class);
+                Intent intent = new Intent(getActivity(), InviteMessageActivity.class);
                 startActivity(intent);
                 break;
             case R.id.ll_groups:
@@ -100,6 +101,10 @@ public class ContactListFragment extends EaseContactListFragment {
 
     public void isShow() {
         boolean isShow = SpUtils.getInstace().getBoolean(SpUtils.NEW_INVITE, false);
-        contanctIvInvite.setVisibility(isShow? View.VISIBLE : View.GONE);
+
+        Log.i("aaaaaaaaaaaaaaaaaaa", "isShow: " + isShow);
+        Log.i("aaaaaaaaaaaaaaaaaaa", "contanctIvInvite: " + contanctIvInvite);
+
+        contanctIvInvite.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 }
