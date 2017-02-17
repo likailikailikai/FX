@@ -1,6 +1,7 @@
 package com.atguigu.fx;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.atguigu.fx.modle.Modle;
 import com.hyphenate.chat.EMOptions;
@@ -13,9 +14,17 @@ import com.hyphenate.easeui.controller.EaseUI;
 public class MyApplication extends Application {
 
 
+    private static Context context;
+
+    public static Context getContext() {
+        return context;
+    }
+
     @Override
     public void onCreate() {
             super.onCreate();
+
+        context = this;
 
         //初始化环信SDK
         initHXSdk();

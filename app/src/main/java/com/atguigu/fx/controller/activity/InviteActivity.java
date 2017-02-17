@@ -38,6 +38,9 @@ public class InviteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite);
         ButterKnife.bind(this);
+
+
+
     }
 
     @OnClick({R.id.invite_btn_search, R.id.invite_btn_add})
@@ -48,9 +51,9 @@ public class InviteActivity extends AppCompatActivity {
                 //搜索
                 //验证
                 if (validate()){
-
                     //显示搜索结果
                     inviteLlItem.setVisibility(View.VISIBLE);
+
                     inviteTvUsername.setText(username);
                 }else{
                     inviteLlItem.setVisibility(View.GONE);
@@ -72,23 +75,21 @@ public class InviteActivity extends AppCompatActivity {
                             e.printStackTrace();
                             ShowToast.showUI(InviteActivity.this,"添加好友失败"+e.getMessage());
                         }
-
                     }
                 });
-
                 break;
         }
     }
 
     private boolean validate() {
-        String username = inviteEtSearch.getText().toString().trim();
-
+        //本地验证
+        username = inviteEtSearch.getText().toString().trim();
         if (TextUtils.isEmpty(username)){
             ShowToast.show(this,"用户名不能为空");
             return false;
         }
-
         //服务器验证
+
         return true;
     }
 }

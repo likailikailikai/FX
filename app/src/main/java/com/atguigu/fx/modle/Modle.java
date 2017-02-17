@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.atguigu.fx.modle.dao.AccountDao;
 import com.atguigu.fx.modle.db.AccountDb;
+import com.atguigu.fx.modle.db.DBManager;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -26,6 +27,7 @@ public class Modle {
 
     private static Modle modle = new Modle();
     private AccountDao accountDao;
+    private DBManager dbManager;
 
     private Modle(){};
 
@@ -65,7 +67,16 @@ public class Modle {
     }
 
     public void loginSuccess(String currentUser) {
+
+        if (dbManager != null){
+            dbManager.close();
+        }
+        dbManager = new DBManager(context, currentUser + ".db");
+
     }
 
 
+    public DBManager getDbManager() {
+        return dbManager;
+    }
 }

@@ -19,7 +19,7 @@ import java.util.List;
 public class ContactDao {
 
     private DBHelpter dbHelpter;
-    private ContactDao(DBHelpter dbHelpter){
+    public ContactDao(DBHelpter dbHelpter){
         this.dbHelpter = dbHelpter;
     }
 
