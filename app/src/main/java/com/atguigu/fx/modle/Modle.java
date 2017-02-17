@@ -6,6 +6,7 @@ import android.content.Context;
 import com.atguigu.fx.modle.dao.AccountDao;
 import com.atguigu.fx.modle.db.AccountDb;
 import com.atguigu.fx.modle.db.DBManager;
+import com.atguigu.fx.utils.SpUtils;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -78,5 +79,9 @@ public class Modle {
 
     public DBManager getDbManager() {
         return dbManager;
+    }
+
+    public void exitLogin() {
+        SpUtils.getInstace().destory();
     }
 }

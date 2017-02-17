@@ -74,6 +74,9 @@ public class SettingFragment extends Fragment {
 
                         Intent intent = new Intent(getActivity(), LoginActivity.class);
                         startActivity(intent);
+
+                        Modle.getInstance().exitLogin();
+                        //跳转到登陆界面
                         ShowToast.showUI(getActivity(),"退出登录成功");
                         getActivity().finish();
 

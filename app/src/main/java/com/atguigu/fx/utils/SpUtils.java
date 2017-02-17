@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.atguigu.fx.MyApplication;
+import com.hyphenate.chat.EMClient;
 
 /**
  * Created by 情v枫 on 2017/2/15.
@@ -18,7 +19,11 @@ public class SpUtils {
     public static SpUtils getInstace(){
 
         if(mSp == null) {
-            mSp = MyApplication.getContext().getSharedPreferences("im", Context.MODE_PRIVATE);
+            mSp = MyApplication.getContext()
+                    .getSharedPreferences(
+                            EMClient.getInstance()
+                                    .getCurrentUser(),Context.MODE_PRIVATE);
+
         }
 
         return instace;
@@ -50,5 +55,9 @@ public class SpUtils {
     // 读取int类型数据
     public int getInt(String key, int defValue){
         return mSp.getInt(key, defValue);
+    }
+
+    public void destory() {
+        mSp = null;
     }
 }

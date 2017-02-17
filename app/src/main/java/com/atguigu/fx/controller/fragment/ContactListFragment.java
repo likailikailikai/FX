@@ -41,6 +41,8 @@ public class ContactListFragment extends EaseContactListFragment {
         }
     };
 
+    private LocalBroadcastManager manager;
+
     @Override
     protected void initView() {
         super.initView();
@@ -64,7 +66,7 @@ public class ContactListFragment extends EaseContactListFragment {
         isShow();
 
         //注册广播
-        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(getActivity());
+        manager = LocalBroadcastManager.getInstance(getActivity());
 
         manager.registerReceiver(recevier, new IntentFilter(Contacts.NEW_INVITE_CHANGE));
     }
@@ -97,13 +99,16 @@ public class ContactListFragment extends EaseContactListFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        manager.unregisterReceiver(recevier);
     }
 
     public void isShow() {
-        boolean isShow = SpUtils.getInstace().getBoolean(SpUtils.NEW_INVITE, false);
+//        boolean isShow = SpUtils.getInstace().getBoolean(SpUtils.NEW_INVITE, false);
+//
+//        Log.i("aaaaaaaaaaaaaaaaaaa", "isShow: " + isShow);
+//        Log.i("aaaaaaaaaaaaaaaaaaa", "contanctIvInvite: " + contanctIvInvite);
+        boolean isShow = SpUtils.getInstace().getBoolean(SpUtils.NEW_INVITE,false);
 
-        Log.i("aaaaaaaaaaaaaaaaaaa", "isShow: " + isShow);
-        Log.i("aaaaaaaaaaaaaaaaaaa", "contanctIvInvite: " + contanctIvInvite);
 
         contanctIvInvite.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
