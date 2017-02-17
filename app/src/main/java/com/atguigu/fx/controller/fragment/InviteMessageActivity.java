@@ -1,6 +1,11 @@
 package com.atguigu.fx.controller.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
@@ -8,6 +13,7 @@ import com.atguigu.fx.R;
 import com.atguigu.fx.controller.adapter.InviteMessageAdapter;
 import com.atguigu.fx.modle.Modle;
 import com.atguigu.fx.modle.bean.InvitationInfo;
+import com.atguigu.fx.utils.Contacts;
 import com.atguigu.fx.utils.ShowToast;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
@@ -23,6 +29,13 @@ public class InviteMessageActivity extends AppCompatActivity {
     ListView inviteMsgLv;
     private InviteMessageAdapter adapter;
 
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            refresh();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +43,13 @@ public class InviteMessageActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initView();
+
+        initData();
+    }
+
+    private void initData() {
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.registerReceiver(receiver,new IntentFilter(Contacts.NEW_INVITE_CHANGE));
     }
 
     private void initView() {
