@@ -20,6 +20,7 @@ import com.atguigu.fx.utils.ShowToast;
 import com.atguigu.fx.utils.SpUtils;
 import com.baidu.platform.comapi.map.E;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.hyphenate.exceptions.HyphenateException;
@@ -92,6 +93,9 @@ public class ContactListFragment extends EaseContactListFragment {
 
                 //跳转
                 Intent intent = new Intent(getActivity(),ChatActivity.class);
+
+                //传参数
+                intent.putExtra(EaseConstant.EXTRA_USER_ID,user.getUsername());
                 startActivity(intent);
             }
         });
