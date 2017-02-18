@@ -75,13 +75,32 @@ public class ContactListFragment extends EaseContactListFragment {
         });
         //初始化小红点
         isShow();
-
         //注册广播
         manager = LocalBroadcastManager.getInstance(getActivity());
-
         manager.registerReceiver(recevier, new IntentFilter(Contacts.NEW_INVITE_CHANGE));
-
         initData();
+
+        initListener();
+    }
+
+    private void initListener() {
+
+        //联系人点击监听
+        setContactListItemClickListener(new EaseContactListItemClickListener() {
+            @Override
+            public void onListItemClicked(EaseUser user) {
+
+                //跳转
+                Intent intent = new Intent(getActivity(),ChatActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void setUpView() {
+        super.setUpView();
+
     }
 
     private void initData() {
@@ -137,11 +156,7 @@ public class ContactListFragment extends EaseContactListFragment {
         refreshContact();
     }
 
-    @Override
-    protected void setUpView() {
-        super.setUpView();
 
-    }
 
     @OnClick({R.id.ll_new_friends, R.id.ll_groups})
     public void onClick(View view) {
