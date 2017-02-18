@@ -13,10 +13,21 @@ import android.widget.LinearLayout;
 
 import com.atguigu.fx.R;
 import com.atguigu.fx.controller.activity.InviteActivity;
+import com.atguigu.fx.modle.Modle;
+import com.atguigu.fx.modle.bean.UserInfo;
 import com.atguigu.fx.utils.Contacts;
 import com.atguigu.fx.utils.ShowToast;
 import com.atguigu.fx.utils.SpUtils;
+import com.baidu.platform.comapi.map.E;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
+import com.hyphenate.exceptions.HyphenateException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,6 +80,61 @@ public class ContactListFragment extends EaseContactListFragment {
         manager = LocalBroadcastManager.getInstance(getActivity());
 
         manager.registerReceiver(recevier, new IntentFilter(Contacts.NEW_INVITE_CHANGE));
+
+        initData();
+    }
+
+    private void initData() {
+        //获取联系人
+        Modle.getInstance().getGlobalThread().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                //从服务器获取联系人
+                try {
+                    List<String> contacts =
+                            EMClient.getInstance().contactManager().getAllContactsFromServer();
+                    //保存数据库
+                    //转化数据
+                    List<UserInfo> userInfos = new ArrayList<UserInfo>();
+
+                    for (int i = 0 ; i<contacts.size();i++){
+                        userInfos.add(new UserInfo(contacts.get(i)));
+                    }
+
+                    Modle.getInstance().getDbManager().getContactDao()
+                            .saveContacts(userInfos,true);
+                    //内存和网页
+                    refreshContact();
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void refreshContact() {
+        //从本地获取数据
+        List<UserInfo> contacts = Modle.getInstance().getDbManager()
+                .getContactDao().getContacts();
+        //校验
+        if(contacts == null) {
+            return;
+        }
+        //转换数据
+        Map<String,EaseUser> maps = new HashMap<>();
+        for (UserInfo userInfo:contacts){
+            EaseUser user = new EaseUser(userInfo.getHxid());
+            maps.put(userInfo.getHxid(),user);
+        }
+        setContactsMap(maps);
+        refresh();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshContact();
     }
 
     @Override

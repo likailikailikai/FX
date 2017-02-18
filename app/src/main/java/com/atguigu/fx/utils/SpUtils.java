@@ -16,13 +16,13 @@ public class SpUtils {
     private static SharedPreferences mSp = null;
 
 
-    public static SpUtils getInstace(){
+    public static SpUtils getInstace() {
 
-        if(mSp == null) {
+        if (mSp == null) {
             mSp = MyApplication.getContext()
                     .getSharedPreferences(
                             EMClient.getInstance()
-                                    .getCurrentUser(),Context.MODE_PRIVATE);
+                                    .getCurrentUser(), Context.MODE_PRIVATE);
 
         }
 
@@ -30,30 +30,30 @@ public class SpUtils {
     }
 
     // 保存
-    public void save(String key, Object value){
+    public void save(String key, Object value) {
 
-        if(value instanceof String) {
+        if (value instanceof String) {
             mSp.edit().putString(key, (String) value).commit();
-        }else if(value instanceof Boolean) {
+        } else if (value instanceof Boolean) {
             mSp.edit().putBoolean(key, (Boolean) value).commit();
-        }else if(value instanceof  Integer) {
+        } else if (value instanceof Integer) {
             mSp.edit().putInt(key, (Integer) value).commit();
         }
     }
 
     // 读取
     // 读取String类型数据
-    public String getString(String key, String defValue){
+    public String getString(String key, String defValue) {
         return mSp.getString(key, defValue);
     }
 
     // 读取boolean类型数据
-    public boolean getBoolean(String key, boolean defValue){
+    public boolean getBoolean(String key, boolean defValue) {
         return mSp.getBoolean(key, defValue);
     }
 
     // 读取int类型数据
-    public int getInt(String key, int defValue){
+    public int getInt(String key, int defValue) {
         return mSp.getInt(key, defValue);
     }
 

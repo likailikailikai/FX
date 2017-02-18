@@ -28,7 +28,6 @@ public class InviteMessageActivity extends AppCompatActivity {
     @Bind(R.id.invite_msg_lv)
     ListView inviteMsgLv;
     private InviteMessageAdapter adapter;
-
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -36,7 +35,6 @@ public class InviteMessageActivity extends AppCompatActivity {
         }
     };
     private LocalBroadcastManager manager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,45 +55,49 @@ public class InviteMessageActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         manager.unregisterReceiver(receiver);
     }
 
     private void initView() {
-        adapter = new InviteMessageAdapter(this, new InviteMessageAdapter.OnInviteChangeListener(){
 
+        adapter = new InviteMessageAdapter(this, new InviteMessageAdapter.OnInviteChangeListener() {
             @Override
             public void onAccept(final InvitationInfo info) {
-                Modle.getInstance().getGlobalThread().execute(new Runnable() {
-                       @Override
-                       public void run() {
-                               //网络 通知环信服务器
-                                       try {
-                                EMClient.getInstance().contactManager()
-                                                .acceptInvitation(info.getUserInfo().getHxid());
-                                //本地
-                                        Modle.getInstance().getDbManager()
-                                                .getInvitationDao()
-                                                .updateInvitationStatus(InvitationInfo.InvitationStatus.INVITE_ACCEPT,
-                                                        info.getUserInfo().getHxid());
 
-                                        //内存和网页
-                                                runOnUiThread(new Runnable() {
-                                                        @Override
-                                                   public void run() {
-                                                           refresh();
-                                                         ShowToast.show(InviteMessageActivity.this,"接受成功");
-                                                       }
-                                                    });
-                            } catch (HyphenateException e) {
-                                e.printStackTrace();
-                                                     ShowToast.showUI(InviteMessageActivity.this,"接受失败"+e.getMessage());
-                                        }
+                Modle.getInstance().getGlobalThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        //网络 通知环信服务器
+                        try {
+                            EMClient.getInstance().contactManager()
+                                    .acceptInvitation(info.getUserInfo().getHxid());
+                            //本地
+                            Modle.getInstance().getDbManager()
+                                    .getInvitationDao()
+                                    .updateInvitationStatus(InvitationInfo.InvitationStatus.INVITE_ACCEPT,
+                                            info.getUserInfo().getHxid());
+
+                            //内存和网页
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refresh();
+                                    ShowToast.show(InviteMessageActivity.this,"接受成功");
                                 }
-                        });
+                            });
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                            ShowToast.showUI(InviteMessageActivity.this,"接受失败"+e.getMessage());
+                        }
+                    }
+                });
 
             }
+
             @Override
             public void onReject(final InvitationInfo info) {
+
                 Modle.getInstance().getGlobalThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -130,14 +132,12 @@ public class InviteMessageActivity extends AppCompatActivity {
         refresh();
     }
 
+
     private void refresh() {
 
         //获取数据
-        List<InvitationInfo> invitations = Modle.getInstance()
-                .getDbManager()
-                .getInvitationDao()
+        List<InvitationInfo> invitations = Modle.getInstance().getDbManager().getInvitationDao()
                 .getInvitations();
-
         //刷新数据
         if (invitations == null){
             return;
