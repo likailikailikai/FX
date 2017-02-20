@@ -66,7 +66,10 @@
         <activity android:name=".controller.fragment.ChatActivity" />
         <activity android:name=".controller.activity.InviteActivity" />
         <activity android:name=".controller.activity.GroupListActivity" />
-        <activity android:name=".controller.fragment.InviteMessageActivity"></activity>
+        <activity android:name=".controller.fragment.InviteMessageActivity" />
+        <activity android:name=".controller.fragment.GroupListActivity" />
+        <activity android:name=".controller.fragment.CreateGroupActivity" />
+        <activity android:name=".controller.fragment.PickContactActivity"></activity>
     </application>
 
 </manifest>

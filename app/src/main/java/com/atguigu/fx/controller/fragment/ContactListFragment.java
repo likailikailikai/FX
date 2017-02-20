@@ -89,7 +89,7 @@ public class ContactListFragment extends EaseContactListFragment {
         //注册广播
         manager = LocalBroadcastManager.getInstance(getActivity());
         manager.registerReceiver(recevier, new IntentFilter(Contacts.NEW_INVITE_CHANGE));
-        manager.registerReceiver(contactReceiver,new IntentFilter(Contacts.CONTACT_CHANGE));
+        manager.registerReceiver(contactReceiver, new IntentFilter(Contacts.CONTACT_CHANGE));
         initData();
 
         initListener();
@@ -103,10 +103,10 @@ public class ContactListFragment extends EaseContactListFragment {
             public void onListItemClicked(EaseUser user) {
 
                 //跳转
-                Intent intent = new Intent(getActivity(),ChatActivity.class);
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
 
                 //传参数
-                intent.putExtra(EaseConstant.EXTRA_USER_ID,user.getUsername());
+                intent.putExtra(EaseConstant.EXTRA_USER_ID, user.getUsername());
                 startActivity(intent);
             }
         });
@@ -114,8 +114,8 @@ public class ContactListFragment extends EaseContactListFragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                
-                if(position == 0) {
+
+                if (position == 0) {
                     return false;
                 }
 
@@ -158,11 +158,11 @@ public class ContactListFragment extends EaseContactListFragment {
                             .removeInvitation(userInfo.getHxid());
                     //刷新
                     refreshContact();
-                    ShowToast.showUI(getActivity(),"删除成功");
+                    ShowToast.showUI(getActivity(), "删除成功");
 
                 } catch (HyphenateException e) {
                     e.printStackTrace();
-                    ShowToast.showUI(getActivity(),"删除失败"+e.getMessage());
+                    ShowToast.showUI(getActivity(), "删除失败" + e.getMessage());
                 }
             }
         });
@@ -189,14 +189,23 @@ public class ContactListFragment extends EaseContactListFragment {
                     //转化数据
                     List<UserInfo> userInfos = new ArrayList<UserInfo>();
 
-                    for (int i = 0 ; i<contacts.size();i++){
+                    for (int i = 0; i < contacts.size(); i++) {
                         userInfos.add(new UserInfo(contacts.get(i)));
                     }
 
                     Modle.getInstance().getDbManager().getContactDao()
-                            .saveContacts(userInfos,true);
+                            .saveContacts(userInfos, true);
                     //内存和网页
-                    refreshContact();
+                    //判断activity是否为空
+                    if(getActivity() == null) {
+                        return;
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshContact();
+                        }
+                    });
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                 }
@@ -209,14 +218,14 @@ public class ContactListFragment extends EaseContactListFragment {
         contacts = Modle.getInstance().getDbManager().getContactDao()
                 .getContacts();
         //校验
-        if(contacts == null) {
+        if (contacts == null) {
             return;
         }
         //转换数据
-        Map<String,EaseUser> maps = new HashMap<>();
-        for (UserInfo userInfo: contacts){
+        Map<String, EaseUser> maps = new HashMap<>();
+        for (UserInfo userInfo : contacts) {
             EaseUser user = new EaseUser(userInfo.getHxid());
-            maps.put(userInfo.getHxid(),user);
+            maps.put(userInfo.getHxid(), user);
         }
         setContactsMap(maps);
         refresh();
@@ -227,7 +236,6 @@ public class ContactListFragment extends EaseContactListFragment {
         super.onResume();
         refreshContact();
     }
-
 
 
     @OnClick({R.id.ll_new_friends, R.id.ll_groups})
@@ -242,7 +250,10 @@ public class ContactListFragment extends EaseContactListFragment {
                 startActivity(intent);
                 break;
             case R.id.ll_groups:
-                ShowToast.show(getActivity(), "bbb");
+
+                //跳转到群列表
+                Intent groupIntent = new Intent(getActivity(), GroupListActivity.class);
+                startActivity(groupIntent);
                 break;
         }
     }
@@ -260,7 +271,7 @@ public class ContactListFragment extends EaseContactListFragment {
 //
 //        Log.i("aaaaaaaaaaaaaaaaaaa", "isShow: " + isShow);
 //        Log.i("aaaaaaaaaaaaaaaaaaa", "contanctIvInvite: " + contanctIvInvite);
-        boolean isShow = SpUtils.getInstace().getBoolean(SpUtils.NEW_INVITE,false);
+        boolean isShow = SpUtils.getInstace().getBoolean(SpUtils.NEW_INVITE, false);
 
 
         contanctIvInvite.setVisibility(isShow ? View.VISIBLE : View.GONE);
