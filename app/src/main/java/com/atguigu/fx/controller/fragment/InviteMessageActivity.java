@@ -125,6 +125,9 @@ public class InviteMessageActivity extends AppCompatActivity {
                     }
                 });
             }
+
+
+
         });
 
         inviteMsgLv.setAdapter(adapter);

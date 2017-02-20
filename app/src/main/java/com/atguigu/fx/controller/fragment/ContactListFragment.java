@@ -65,6 +65,13 @@ public class ContactListFragment extends EaseContactListFragment {
         }
     };
 
+    private BroadcastReceiver groupRecevier = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isShow();
+        }
+    };
+
     @Override
     protected void initView() {
         super.initView();
@@ -90,8 +97,12 @@ public class ContactListFragment extends EaseContactListFragment {
         manager = LocalBroadcastManager.getInstance(getActivity());
         manager.registerReceiver(recevier, new IntentFilter(Contacts.NEW_INVITE_CHANGE));
         manager.registerReceiver(contactReceiver, new IntentFilter(Contacts.CONTACT_CHANGE));
+        manager.registerReceiver(groupRecevier,new IntentFilter(Contacts.GROUP_INVITE_CHAGE));
+
+        //初始化数据
         initData();
 
+        //监听事件
         initListener();
     }
 
@@ -197,7 +208,7 @@ public class ContactListFragment extends EaseContactListFragment {
                             .saveContacts(userInfos, true);
                     //内存和网页
                     //判断activity是否为空
-                    if(getActivity() == null) {
+                    if (getActivity() == null) {
                         return;
                     }
                     getActivity().runOnUiThread(new Runnable() {
@@ -263,7 +274,14 @@ public class ContactListFragment extends EaseContactListFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+
+        //解注册广播监听
+
         manager.unregisterReceiver(recevier);
+
+        manager.unregisterReceiver(contactReceiver);
+
+        manager.unregisterReceiver(groupRecevier);
     }
 
     public void isShow() {
