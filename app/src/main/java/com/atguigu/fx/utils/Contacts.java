@@ -1,6 +1,8 @@
 package com.atguigu.fx.utils;
 
 
+import android.content.IntentFilter;
+
 /**
  * Created by 情v枫 on 2017/2/16.
  */
@@ -14,4 +16,6 @@ public class Contacts {
 
     //群邀请状态
     public static final String GROUP_INVITE_CHAGE = "group_invite_chage";
+    //退群广播
+    public static final String DESTORY_GROUP = "destory_group";
 }
