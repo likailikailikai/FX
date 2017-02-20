@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.atguigu.fx.R;
 import com.atguigu.fx.modle.bean.PickInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class PickAdapter extends BaseAdapter {
 
     private Context context;
     private List<PickInfo> pickInfos;
+    private List<String> contactCheck;
 
     public PickAdapter(Context context) {
         this.context = context;
@@ -77,6 +79,29 @@ public class PickAdapter extends BaseAdapter {
         viewHolder.tvItemPickContactsName.setText(pickInfo.getUserInfo().getUsername());
 
         return convertView;
+    }
+
+    /**
+     * 获取被选择中的联系人
+     *
+     * @return
+     */
+    public List<String> getContactCheck() {
+        //校验
+        if (pickInfos == null) {
+            return null;
+        }
+
+        List<String> userInfos = new ArrayList<>();
+        for (PickInfo pickInfo : pickInfos
+                ) {
+            //判断是否选中了联系人
+            if (pickInfo.isCheck()) {
+                userInfos.add(pickInfo.getUserInfo().getHxid());
+            }
+        }
+
+        return userInfos;
     }
 
     class ViewHolder {

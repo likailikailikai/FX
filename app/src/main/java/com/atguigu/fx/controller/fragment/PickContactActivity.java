@@ -1,5 +1,6 @@
 package com.atguigu.fx.controller.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -95,7 +96,21 @@ public class PickContactActivity extends AppCompatActivity {
 
     }
 
+    //保存联系人
     @OnClick(R.id.tv_pack_save)
     public void onClick() {
+
+        List<String> contactCheck = adapter.getContactCheck();
+
+        if(contactCheck == null) {
+            return;
+        }
+        Intent intent = new Intent();
+
+        intent.putExtra("members",contactCheck.toArray(new String[contactCheck.size()]));
+        setResult(1,intent);
+
+        //结束当前页面
+        finish();
     }
 }
