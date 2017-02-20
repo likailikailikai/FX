@@ -3,6 +3,7 @@ package com.atguigu.fx.controller.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -102,15 +103,28 @@ public class PickContactActivity extends AppCompatActivity {
 
         List<String> contactCheck = adapter.getContactCheck();
 
-        if(contactCheck == null) {
+        if (contactCheck == null) {
             return;
         }
         Intent intent = new Intent();
 
-        intent.putExtra("members",contactCheck.toArray(new String[contactCheck.size()]));
-        setResult(1,intent);
+        intent.putExtra("members", contactCheck.toArray(new String[contactCheck.size()]));
+        setResult(1, intent);
 
         //结束当前页面
         finish();
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //返回事件处理的事情
+
+            finish();
+            //返回true事件自己消费掉
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }
+
