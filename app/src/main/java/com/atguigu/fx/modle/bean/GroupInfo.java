@@ -14,7 +14,7 @@ public class GroupInfo {
     public GroupInfo() {
     }
 
-    public GroupInfo(String groupid, String invitePerson, String groupName) {
+    public GroupInfo(String groupName, String groupid, String invitePerson) {
         this.groupid = groupid;
         this.invitePerson = invitePerson;
         this.groupName = groupName;

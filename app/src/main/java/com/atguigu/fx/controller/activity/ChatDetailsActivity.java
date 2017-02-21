@@ -36,7 +36,12 @@ public class ChatDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_details);
         ButterKnife.bind(this);
 
+        initView();
         initData();
+    }
+
+    private void initView() {
+
     }
 
     private void initData() {
